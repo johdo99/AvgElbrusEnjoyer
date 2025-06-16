@@ -1,11 +1,11 @@
-<Window x:Class="Client.Views.MainView"
+ï»¿<Window x:Class="Client.Views.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Client.ViewModels"
         mc:Ignorable="d"
-        Title="AvgElbrusEnjoyer - Ñáîðêà ÏÊ" Height="600" Width="800"
+        Title="AvgElbrusEnjoyer - Ð¡Ð±Ð¾Ñ€ÐºÐ° ÐŸÐš" Height="600" Width="800"
         WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
@@ -18,15 +18,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Äîñòóïíûå êîìïîíåíòû" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+        <TextBlock Text="Ð”Ð¾ÑÑ‚ÑƒÐ¿Ð½Ñ‹Ðµ ÐºÐ¾Ð¼Ð¿Ð¾Ð½ÐµÐ½Ñ‚Ñ‹" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
 
         <ListView Grid.Row="1" ItemsSource="{Binding Components}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Íàçâàíèå" Width="250" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Òèï" Width="150" DisplayMemberBinding="{Binding Type}"/>
-                    <GridViewColumn Header="Öåíà" Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:C}}"/>
-                    <GridViewColumn Header="Íà ñêëàäå" Width="100" DisplayMemberBinding="{Binding Stock}"/>
+                    <GridViewColumn Header="ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ" Width="250" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Ð¢Ð¸Ð¿" Width="150" DisplayMemberBinding="{Binding Type}"/>
+                    <GridViewColumn Header="Ð¦ÐµÐ½Ð°" Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:C}}"/>
+                    <GridViewColumn Header="ÐÐ° ÑÐºÐ»Ð°Ð´Ðµ" Width="100" DisplayMemberBinding="{Binding Stock}"/>
                 </GridView>
             </ListView.View>
         </ListView>

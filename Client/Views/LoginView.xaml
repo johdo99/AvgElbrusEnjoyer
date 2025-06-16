@@ -1,17 +1,17 @@
-<Window x:Class="Client.Views.LoginView"
+ï»¿<Window x:Class="Client.Views.LoginView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Âõîä â ñèñòåìó" Height="300" Width="400"
+        Title="Ð’Ñ…Ð¾Ð´ Ð² ÑÐ¸ÑÑ‚ÐµÐ¼Ñƒ" Height="300" Width="400"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
-            <Label Content="Èìÿ ïîëüçîâàòåëÿ:"/>
+            <Label Content="Ð˜Ð¼Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ:"/>
             <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
 
-            <Label Content="Ïàðîëü:"/>
+            <Label Content="ÐŸÐ°Ñ€Ð¾Ð»ÑŒ:"/>
             <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,20"/>
 
-            <Button Content="Âîéòè" Command="{Binding LoginCommand}" Height="30" IsDefault="True"/>
+            <Button Content="Ð’Ð¾Ð¹Ñ‚Ð¸" Command="{Binding LoginCommand}" Height="30" IsDefault="True"/>
 
             <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Margin="0,10,0,0" TextWrapping="Wrap"/>
         </StackPanel>
