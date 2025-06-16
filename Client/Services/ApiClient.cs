@@ -61,4 +61,21 @@ public class ApiClient
         var response = await _httpClient.PostAsJsonAsync($"{_baseAddress}/api/orders", orderRequest);
         return response.StatusCode == System.Net.HttpStatusCode.Created;
     }
+
+    public async Task<IEnumerable<OrderDto>?> GetMyOrdersAsync()
+    {
+        var userId = 1;
+
+        try
+        {
+            var url = $"{_baseAddress}/api/orders?userId={userId}";
+            Debug.WriteLine($"[ApiClient] Запрос на получение заказов: {url}");
+            return await _httpClient.GetFromJsonAsync<IEnumerable<OrderDto>>(url);
+        }
+        catch (HttpRequestException ex)
+        {
+            Debug.WriteLine($"[ApiClient] Критическая ошибка подключения к серверу при получении заказов: {ex.Message}");
+            return null;
+        }
+    }
 }
