@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Net.Http.Json" Version="9.0.6" />
   </ItemGroup>
 
