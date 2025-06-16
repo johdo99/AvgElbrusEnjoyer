@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Server.Models;
 
-namespace Server.Models
+
+public class ComputerBuild
 {
-    internal class ComputerBuild
-    {
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string? Category { get; set; }
+    public List<Component> Components { get; set; } = new List<Component>();
+
+    public decimal TotalPrice => Components.Sum(c => c.Price);
 }

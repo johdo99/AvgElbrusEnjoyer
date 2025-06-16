@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Server.Models;
 
-namespace Server.Models
+public class Order
 {
-    internal class Order
-    {
-    }
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public int BuildId { get; set; }
+
+    public decimal TotalPrice { get; set; }
+
+    public string Status { get; set; }
+    public DateTime OrderDate { get; set; }
 }

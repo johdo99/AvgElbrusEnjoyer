@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Server.Models;
 
-namespace Server.Models
+public class User
 {
-    internal class User
-    {
-    }
+    public int Id { get; set; }
+    public string Username { get; set; }
+    public string PasswordHash { get; set; }
+    public UserRole Role { get; set; }
 }
