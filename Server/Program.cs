@@ -13,12 +13,16 @@ public class Program
         var dbConnectionFactory = new DbConnectionFactory();
 
         IUserRepository userRepository = new UserRepository(dbConnectionFactory);
-        IAuthService authService = new AuthService(userRepository);
-        var authController = new AuthController(authService);
-
         IComponentRepository componentRepository = new ComponentRepository(dbConnectionFactory);
+        IOrderRepository orderRepository = new OrderRepository(dbConnectionFactory);
+
+        IAuthService authService = new AuthService(userRepository);
         ICatalogService catalogService = new CatalogService(componentRepository);
+        IOrderService orderService = new OrderService(orderRepository, componentRepository);
+
+        var authController = new AuthController(authService);
         var catalogController = new CatalogController(catalogService);
+        var orderController = new OrderController(orderService);
 
         var listener = new HttpListener();
         listener.Prefixes.Add("http://localhost:8888/");
@@ -31,13 +35,18 @@ public class Program
             var request = context.Request;
             Console.WriteLine($"Получен запрос: {request.HttpMethod} {request.Url}");
 
-            if (request.Url.AbsolutePath.StartsWith("/api/auth"))
+            var path = request.Url.AbsolutePath;
+            if (path.StartsWith("/api/auth"))
             {
                 await authController.HandleRequestAsync(context);
             }
-            else if (request.Url.AbsolutePath.StartsWith("/api/catalog"))
+            else if (path.StartsWith("/api/catalog"))
             {
                 await catalogController.HandleRequestAsync(context);
+            }
+            else if (path.StartsWith("/api/orders"))
+            {
+                await orderController.HandleRequestAsync(context);
             }
             else
             {
