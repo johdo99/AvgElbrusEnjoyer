@@ -13,7 +13,10 @@ public partial class MainView : Window
         {
             viewModel.OnCreateBuildRequested += (selectedComponents) =>
             {
-                var createOrderView = new CreateOrderView(selectedComponents);
+                var createOrderView = new CreateOrderView(selectedComponents)
+                {
+                    Owner = this
+                };
                 createOrderView.ShowDialog();
             };
         }
