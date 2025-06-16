@@ -23,6 +23,14 @@ public class ApiClient
         return null;
     }
 
+    public async Task<bool> RegisterAsync(string username, string password)
+    {
+        var requestData = new RegisterRequestDto { Username = username, Password = password };
+        var response = await _httpClient.PostAsJsonAsync($"{_baseAddress}/api/auth/register", requestData);
+
+        return response.StatusCode == System.Net.HttpStatusCode.Created;
+    }
+
     public async Task<IEnumerable<ComponentDto>?> GetComponentsAsync()
     {
         try

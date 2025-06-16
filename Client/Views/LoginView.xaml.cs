@@ -17,6 +17,16 @@ public partial class LoginView : Window
             this.Close();
         };
 
+        viewModel.OnActionSuccess += (message) =>
+        {
+            MessageBox.Show(message, "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+        };
+
+        viewModel.OnActionFailed += (errorMessage) =>
+        {
+            MessageBox.Show(errorMessage, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        };
+
         this.DataContext = viewModel;
     }
 }

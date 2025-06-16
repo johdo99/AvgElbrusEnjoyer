@@ -17,10 +17,10 @@ public class UserRepository : IUserRepository
         using var connection = _dbConnectionFactory.CreateConnection();
 
         var sql = """
-                  INSERT INTO Users (Username, PasswordHash, Role)
-                  VALUES (@Username, @PasswordHash, @Role);
-                  SELECT CAST(SCOPE_IDENTITY() as int);
-                  """;
+              INSERT INTO Users (Username, password_hash, Role)
+              VALUES (@Username, @PasswordHash, @Role);
+              SELECT CAST(SCOPE_IDENTITY() as int);
+              """;
 
         // Dapper выполняет запрос и передает параметры из объекта user
         var newId = await connection.QuerySingleAsync<int>(sql, user);

@@ -1,5 +1,4 @@
 ﻿using Client.Services;
-using System.Diagnostics;
 using System.Windows.Input;
 
 namespace Client.ViewModels;
@@ -20,30 +19,23 @@ public class LoginViewModel : BaseViewModel
         set { _password = value; OnPropertyChanged(); }
     }
 
-    private string _errorMessage = string.Empty;
-    public string ErrorMessage
-    {
-        get => _errorMessage;
-        set { _errorMessage = value; OnPropertyChanged(); }
-    }
-
     private readonly ApiClient _apiClient;
     public ICommand LoginCommand { get; }
+    public ICommand RegisterCommand { get; }
+
+    public event Action? OnLoginSuccess;
+    public event Action<string>? OnActionSuccess;
+    public event Action<string>? OnActionFailed;
 
     public LoginViewModel()
     {
         _apiClient = new ApiClient();
-        LoginCommand = new RelayCommand(async _ => await LoginAsync(), _ => CanLogin());
+        LoginCommand = new RelayCommand(async _ => await LoginAsync(), _ => CanExecute());
+        RegisterCommand = new RelayCommand(async _ => await RegisterAsync(), _ => CanExecute());
     }
-
-    public event Action? OnLoginSuccess;
 
     private async Task LoginAsync()
     {
-        ErrorMessage = string.Empty;
-
-        Debug.WriteLine($"[Client.LoginViewModel] Пытаемся войти. Пароль: '{Password}'");
-
         var user = await _apiClient.LoginAsync(Username, Password);
         if (user != null)
         {
@@ -51,11 +43,24 @@ public class LoginViewModel : BaseViewModel
         }
         else
         {
-            ErrorMessage = "Неверный логин или пароль.";
+            OnActionFailed?.Invoke("Неверный логин или пароль.");
         }
     }
 
-    private bool CanLogin()
+    private async Task RegisterAsync()
+    {
+        var success = await _apiClient.RegisterAsync(Username, Password);
+        if (success)
+        {
+            OnActionSuccess?.Invoke("Регистрация успешна! Теперь вы можете войти.");
+        }
+        else
+        {
+            OnActionFailed?.Invoke("Пользователь с таким именем уже существует.");
+        }
+    }
+
+    private bool CanExecute()
     {
         return !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
     }
