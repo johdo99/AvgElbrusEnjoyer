@@ -55,4 +55,15 @@ public class ApiClient
 
         return null;
     }
+
+    /// <summary>
+    /// Отправляет новый заказ на сервер
+    /// </summary>
+    public async Task<bool> CreateOrderAsync(CreateOrderRequestDto orderRequest)
+    {
+        var content = new StringContent(JsonSerializer.Serialize(orderRequest), Encoding.UTF8, "application/json");
+        var response = await _httpClient.PostAsync($"{_baseAddress}/api/orders", content);
+
+        return response.StatusCode == System.Net.HttpStatusCode.Created;
+    }
 }
