@@ -42,4 +42,24 @@ public class OrderRepository : IOrderRepository
             throw;
         }
     }
+
+    public async Task<IEnumerable<Order>> GetByUserIdAsync(int userId)
+    {
+        using var connection = _dbConnectionFactory.CreateConnection();
+
+        var sql = """
+                  SELECT 
+                      id, 
+                      user_id AS UserId, 
+                      build_id AS BuildId, 
+                      total_price AS TotalPrice, 
+                      status, 
+                      order_date AS OrderDate 
+                  FROM Orders 
+                  WHERE user_id = @UserId 
+                  ORDER BY order_date DESC;
+                  """;
+
+        return await connection.QueryAsync<Order>(sql, new { UserId = userId });
+    }
 }
