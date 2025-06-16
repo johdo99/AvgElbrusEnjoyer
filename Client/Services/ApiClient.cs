@@ -64,7 +64,12 @@ public class ApiClient
 
     public async Task<IEnumerable<OrderDto>?> GetMyOrdersAsync()
     {
-        var userId = 1;
+        if (UserSession.CurrentUser == null)
+        {
+            return null;
+        }
+
+        var userId = UserSession.CurrentUser.UserId;
 
         try
         {

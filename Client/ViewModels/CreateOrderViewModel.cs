@@ -25,14 +25,19 @@ public class CreateOrderViewModel : BaseViewModel
 
     private async Task ConfirmOrderAsync()
     {
+        if (UserSession.CurrentUser == null)
+        {
+            OnOrderProcessed?.Invoke(false);
+            return;
+        }
+
         var orderRequest = new CreateOrderRequestDto
         {
-            UserId = 1,
+            UserId = UserSession.CurrentUser.UserId,
             ComponentIds = SelectedComponents.Select(c => c.Id).ToList()
         };
 
         var success = await _apiClient.CreateOrderAsync(orderRequest);
-
         OnOrderProcessed?.Invoke(success);
     }
 }

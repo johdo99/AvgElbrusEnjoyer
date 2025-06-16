@@ -39,6 +39,7 @@ public class LoginViewModel : BaseViewModel
         var user = await _apiClient.LoginAsync(Username, Password);
         if (user != null)
         {
+            UserSession.Login(user);
             OnLoginSuccess?.Invoke();
         }
         else
