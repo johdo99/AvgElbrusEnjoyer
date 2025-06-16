@@ -12,6 +12,8 @@ public partial class LoginView : Window
 
         viewModel.OnLoginSuccess += () =>
         {
+            var mainView = new MainView();
+            mainView.Show();
             this.Close();
         };
 

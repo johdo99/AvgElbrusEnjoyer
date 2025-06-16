@@ -1,12 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Client.Models;
+using Client.Services;
+using System.Collections.ObjectModel;
 
-namespace Client.ViewModels
+namespace Client.ViewModels;
+
+public class MainViewModel : BaseViewModel
 {
-    class MainViewModel
+    private readonly ApiClient _apiClient;
+
+    public ObservableCollection<ComponentDto> Components { get; } = new();
+
+    public MainViewModel()
     {
+        _apiClient = new ApiClient();
+        _ = LoadComponentsAsync();
+    }
+
+    private async Task LoadComponentsAsync()
+    {
+        var components = await _apiClient.GetComponentsAsync();
+        if (components != null)
+        {
+            Components.Clear();
+            foreach (var component in components)
+            {
+                Components.Add(component);
+            }
+        }
     }
 }
