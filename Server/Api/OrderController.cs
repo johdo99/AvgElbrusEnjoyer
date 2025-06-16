@@ -1,6 +1,9 @@
 ﻿using Server.Services;
+using System;
+using System.IO;
 using System.Net;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Server.Api;
 
@@ -22,7 +25,16 @@ public class OrderController
         {
             using var reader = new StreamReader(request.InputStream, request.ContentEncoding);
             var requestBody = await reader.ReadToEndAsync();
-            var orderRequest = JsonSerializer.Deserialize<CreateOrderRequest>(requestBody);
+
+            var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var orderRequest = JsonSerializer.Deserialize<CreateOrderRequest>(requestBody, jsonOptions);
+
+            if (orderRequest?.ComponentIds == null)
+            {
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.OutputStream.Close();
+                return;
+            }
 
             try
             {

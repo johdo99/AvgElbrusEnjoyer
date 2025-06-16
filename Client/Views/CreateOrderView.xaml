@@ -20,7 +20,7 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Название" Width="250" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="Тип" Width="120" DisplayMemberBinding="{Binding Type}"/>
+                    <GridViewColumn Header="Тип" Width="120" DisplayMemberBinding="{Binding TypeAsString}"/>
                     <GridViewColumn Header="Цена" Width="100" DisplayMemberBinding="{Binding Price, StringFormat={}{0:C}}"/>
                 </GridView>
             </ListView.View>
