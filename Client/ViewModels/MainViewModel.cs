@@ -1,6 +1,7 @@
 ﻿using Client.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Client.Models;
 using System.Windows.Input;
 
 namespace Client.ViewModels;
@@ -12,6 +13,8 @@ public class MainViewModel : BaseViewModel
     public ObservableCollection<SelectableComponentViewModel> Components { get; } = new();
 
     public ICommand CreateBuildCommand { get; }
+
+    public event Action<IEnumerable<ComponentDto>>? OnCreateBuildRequested;
 
     public MainViewModel()
     {
@@ -29,18 +32,10 @@ public class MainViewModel : BaseViewModel
 
         if (!selectedComponents.Any())
         {
-            Debug.WriteLine("Не выбрано ни одного компонента.");
             return;
         }
 
-        Debug.WriteLine("Выбранные компоненты для сборки:");
-        decimal totalPrice = 0;
-        foreach (var component in selectedComponents)
-        {
-            Debug.WriteLine($"- {component.Name} ({component.Price:C})");
-            totalPrice += component.Price;
-        }
-        Debug.WriteLine($"Итоговая стоимость: {totalPrice:C}");
+        OnCreateBuildRequested?.Invoke(selectedComponents);
     }
 
     private async Task LoadComponentsAsync()

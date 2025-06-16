@@ -1,11 +1,14 @@
-﻿using System.Windows;
+﻿using Client.Models;
+using Client.ViewModels;
+using System.Windows;
 
 namespace Client.Views;
 
 public partial class CreateOrderView : Window
 {
-    public CreateOrderView()
+    public CreateOrderView(IEnumerable<ComponentDto> selectedComponents)
     {
         InitializeComponent();
+        DataContext = new CreateOrderViewModel(selectedComponents);
     }
 }

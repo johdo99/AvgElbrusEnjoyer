@@ -1,12 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Client.Models;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
-namespace Client.ViewModels
+namespace Client.ViewModels;
+
+public class CreateOrderViewModel : BaseViewModel
 {
-    class CreateOrderViewModel
+    public ObservableCollection<ComponentDto> SelectedComponents { get; }
+
+    public decimal TotalPrice { get; }
+
+    public ICommand ConfirmOrderCommand { get; }
+
+    public CreateOrderViewModel(IEnumerable<ComponentDto> selectedComponents)
+    {
+        SelectedComponents = new ObservableCollection<ComponentDto>(selectedComponents);
+        TotalPrice = SelectedComponents.Sum(c => c.Price);
+        ConfirmOrderCommand = new RelayCommand(_ => ConfirmOrder());
+    }
+
+    private void ConfirmOrder()
     {
     }
 }
