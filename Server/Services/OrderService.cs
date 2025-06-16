@@ -39,4 +39,9 @@ public class OrderService : IOrderService
 
         return await _orderRepository.CreateOrderAsync(newOrder, components);
     }
+
+    public async Task<IEnumerable<Order>> GetOrdersForUserAsync(int userId)
+    {
+        return await _orderRepository.GetByUserIdAsync(userId);
+    }
 }
