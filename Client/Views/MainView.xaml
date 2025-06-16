@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
-        <viewModels:MainViewModel/>
+        <viewModels:MainViewModel />
     </Window.DataContext>
 
     <Grid Margin="10">

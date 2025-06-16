@@ -3,19 +3,20 @@ using System.Windows;
 
 namespace Client.Views;
 
-public partial class MainView : Window
+public partial class LoginView : Window
 {
-    public MainView()
+    public LoginView()
     {
         InitializeComponent();
+        var viewModel = new LoginViewModel();
 
-        if (DataContext is MainViewModel viewModel)
+        viewModel.OnLoginSuccess += () =>
         {
-            viewModel.OnCreateBuildRequested += (selectedComponents) =>
-            {
-                var createOrderView = new CreateOrderView(selectedComponents);
-                createOrderView.ShowDialog();
-            };
-        }
+            var mainView = new MainView();
+            mainView.Show();
+            this.Close();
+        };
+
+        this.DataContext = viewModel;
     }
 }

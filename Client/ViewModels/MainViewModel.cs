@@ -1,6 +1,5 @@
 ﻿using Client.Services;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using Client.Models;
 using System.Windows.Input;
 
