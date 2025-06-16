@@ -1,4 +1,5 @@
 ﻿using Client.Services;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace Client.ViewModels;
@@ -40,6 +41,9 @@ public class LoginViewModel : BaseViewModel
     private async Task LoginAsync()
     {
         ErrorMessage = string.Empty;
+
+        Debug.WriteLine($"[Client.LoginViewModel] Пытаемся войти. Пароль: '{Password}'");
+
         var user = await _apiClient.LoginAsync(Username, Password);
         if (user != null)
         {

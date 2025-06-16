@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository
     {
         using var connection = _dbConnectionFactory.CreateConnection();
 
-        var sql = "SELECT * FROM Users WHERE Username = @Username";
+        var sql = "SELECT id, username, password_hash AS PasswordHash, role FROM Users WHERE Username = @Username";
 
         // Dapper выполняет запрос и автоматически создает объект User из результата
         return await connection.QuerySingleOrDefaultAsync<User>(sql, new { Username = username });

@@ -13,6 +13,8 @@ public class SelectableComponentViewModel : BaseViewModel
 
     public ComponentDto Component { get; }
 
+    public string TypeAsString => Component.TypeAsString;
+
     public SelectableComponentViewModel(ComponentDto component)
     {
         Component = component;

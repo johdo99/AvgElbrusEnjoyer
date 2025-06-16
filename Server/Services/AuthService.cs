@@ -1,4 +1,5 @@
-﻿using Server.Data.Repositories;
+﻿using System.Diagnostics;
+using Server.Data.Repositories;
 using Server.Models;
 
 namespace Server.Services;
@@ -36,6 +37,7 @@ public class AuthService : IAuthService
 
     public async Task<User?> LoginAsync(string username, string password)
     {
+        Debug.WriteLine($"[Server.AuthService] Дошло до сервиса. Пароль: '{password}'");
         var user = await _userRepository.GetByUsernameAsync(username);
         if (user == null)
         {

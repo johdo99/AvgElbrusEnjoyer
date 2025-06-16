@@ -1,4 +1,5 @@
 ﻿using Server.Services;
+using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
 
@@ -18,15 +19,20 @@ public class AuthController
         var request = context.Request;
         var response = context.Response;
 
+        var jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         try
         {
             if (request.Url.AbsolutePath.EndsWith("/register") && request.HttpMethod == "POST")
             {
-                await RegisterUserAsync(request, response);
+                await RegisterUserAsync(request, response, jsonOptions);
             }
             else if (request.Url.AbsolutePath.EndsWith("/login") && request.HttpMethod == "POST")
             {
-                await LoginUserAsync(request, response);
+                await LoginUserAsync(request, response, jsonOptions);
             }
             else
             {
@@ -44,13 +50,13 @@ public class AuthController
         }
     }
 
-    private async Task RegisterUserAsync(HttpListenerRequest request, HttpListenerResponse response)
+    private async Task RegisterUserAsync(HttpListenerRequest request, HttpListenerResponse response, JsonSerializerOptions jsonOptions)
     {
         using var reader = new StreamReader(request.InputStream, request.ContentEncoding);
         var requestBody = await reader.ReadToEndAsync();
-        var registerRequest = JsonSerializer.Deserialize<RegisterRequest>(requestBody);
+        var registerRequest = JsonSerializer.Deserialize<RegisterRequest>(requestBody, jsonOptions);
 
-        if (registerRequest == null)
+        if (registerRequest == null || string.IsNullOrWhiteSpace(registerRequest.Username) || string.IsNullOrWhiteSpace(registerRequest.Password))
         {
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             return;
@@ -63,18 +69,20 @@ public class AuthController
         }
         catch (InvalidOperationException ex)
         {
-            response.StatusCode = (int)HttpStatusCode.Conflict; // 409 - конфликт, пользователь уже есть
+            response.StatusCode = (int)HttpStatusCode.Conflict;
             Console.WriteLine(ex.Message);
         }
     }
 
-    private async Task LoginUserAsync(HttpListenerRequest request, HttpListenerResponse response)
+    private async Task LoginUserAsync(HttpListenerRequest request, HttpListenerResponse response, JsonSerializerOptions jsonOptions)
     {
         using var reader = new StreamReader(request.InputStream, request.ContentEncoding);
         var requestBody = await reader.ReadToEndAsync();
-        var loginRequest = JsonSerializer.Deserialize<LoginRequest>(requestBody);
+        var loginRequest = JsonSerializer.Deserialize<LoginRequest>(requestBody, jsonOptions);
 
-        if (loginRequest == null)
+        Debug.WriteLine($"[Server.AuthController] Получено от клиента. Пароль в DTO: '{loginRequest?.Password}'");
+
+        if (loginRequest == null || string.IsNullOrWhiteSpace(loginRequest.Username) || string.IsNullOrWhiteSpace(loginRequest.Password))
         {
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             return;
@@ -84,12 +92,11 @@ public class AuthController
 
         if (user == null)
         {
-            response.StatusCode = (int)HttpStatusCode.Unauthorized; // 401 - не авторизован
+            response.StatusCode = (int)HttpStatusCode.Unauthorized;
             return;
         }
 
         response.StatusCode = (int)HttpStatusCode.OK;
-        // В реальном приложении здесь бы возвращался токен (например, JWT)
         var responseData = new { UserId = user.Id, Username = user.Username, Role = user.Role.ToString() };
         var jsonResponse = JsonSerializer.Serialize(responseData);
         var buffer = System.Text.Encoding.UTF8.GetBytes(jsonResponse);

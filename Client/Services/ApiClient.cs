@@ -1,8 +1,7 @@
 ﻿using Client.Models;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 
 namespace Client.Services;
 
@@ -11,59 +10,47 @@ public class ApiClient
     private static readonly HttpClient _httpClient = new HttpClient();
     private readonly string _baseAddress = "http://localhost:8888";
 
-    public ApiClient()
-    {
-    }
-
-    /// <summary>
-    /// Выполняет вход в систему
-    /// </summary>
     public async Task<UserDto?> LoginAsync(string username, string password)
     {
-        var requestData = new { Username = username, Password = password };
-        var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
-
-        var response = await _httpClient.PostAsync($"{_baseAddress}/api/auth/login", content);
+        var requestData = new LoginRequestDto { Username = username, Password = password };
+        Debug.WriteLine($"[Client.ApiClient] Отправляем на сервер. Пароль в DTO: '{requestData.Password}'");
+        var response = await _httpClient.PostAsJsonAsync($"{_baseAddress}/api/auth/login", requestData);
 
         if (response.IsSuccessStatusCode)
         {
-            var user = await response.Content.ReadFromJsonAsync<UserDto>();
-            return user;
+            return await response.Content.ReadFromJsonAsync<UserDto>();
         }
-
         return null;
     }
 
-    /// <summary>
-    /// Получает список всех компонентов
-    /// </summary>
     public async Task<IEnumerable<ComponentDto>?> GetComponentsAsync()
     {
         try
         {
             var response = await _httpClient.GetAsync($"{_baseAddress}/api/catalog/components");
+
             if (response.IsSuccessStatusCode)
             {
-                var components = await response.Content.ReadFromJsonAsync<IEnumerable<ComponentDto>>();
-                return components;
+                Debug.WriteLine("[ApiClient] Успешно получили компоненты (Статус 200 OK).");
+                return await response.Content.ReadFromJsonAsync<IEnumerable<ComponentDto>>();
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine($"[ApiClient] Ошибка получения компонентов! Статус-код: {response.StatusCode}. Ответ сервера: {errorContent}");
+                return null;
             }
         }
         catch (HttpRequestException ex)
         {
-            System.Console.WriteLine($"Ошибка подключения к серверу: {ex.Message}");
+            Debug.WriteLine($"[ApiClient] Критическая ошибка подключения к серверу: {ex.Message}");
+            return null;
         }
-
-        return null;
     }
 
-    /// <summary>
-    /// Отправляет новый заказ на сервер
-    /// </summary>
     public async Task<bool> CreateOrderAsync(CreateOrderRequestDto orderRequest)
     {
-        var content = new StringContent(JsonSerializer.Serialize(orderRequest), Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync($"{_baseAddress}/api/orders", content);
-
+        var response = await _httpClient.PostAsJsonAsync($"{_baseAddress}/api/orders", orderRequest);
         return response.StatusCode == System.Net.HttpStatusCode.Created;
     }
 }

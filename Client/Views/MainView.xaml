@@ -33,7 +33,7 @@
                     </GridViewColumn>
 
                     <GridViewColumn Header="Название" Width="250" DisplayMemberBinding="{Binding Component.Name}"/>
-                    <GridViewColumn Header="Тип" Width="150" DisplayMemberBinding="{Binding Component.Type}"/>
+                    <GridViewColumn Header="Тип" Width="150" DisplayMemberBinding="{Binding TypeAsString}"/>
                     <GridViewColumn Header="Цена" Width="100" DisplayMemberBinding="{Binding Component.Price, StringFormat={}{0:C}}"/>
                     <GridViewColumn Header="На складе" Width="100" DisplayMemberBinding="{Binding Component.Stock}"/>
                 </GridView>
