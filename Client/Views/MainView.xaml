@@ -9,38 +9,59 @@
         WindowStartupLocation="CenterScreen">
 
     <Window.DataContext>
-        <viewModels:MainViewModel />
+        <viewModels:MainViewModel/>
     </Window.DataContext>
 
-    <Grid Margin="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <TabControl Margin="5">
 
-        <TextBlock Text="Доступные компоненты" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+        <TabItem Header="Сборка ПК">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <ListView Grid.Row="1" ItemsSource="{Binding Components}" SelectionMode="Single">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Выбрать" Width="60">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsSelected}" HorizontalAlignment="Center"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
+                <TextBlock Text="Доступные компоненты" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
 
-                    <GridViewColumn Header="Название" Width="250" DisplayMemberBinding="{Binding Component.Name}"/>
-                    <GridViewColumn Header="Тип" Width="150" DisplayMemberBinding="{Binding TypeAsString}"/>
-                    <GridViewColumn Header="Цена" Width="100" DisplayMemberBinding="{Binding Component.Price, StringFormat={}{0:C}}"/>
-                    <GridViewColumn Header="На складе" Width="100" DisplayMemberBinding="{Binding Component.Stock}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+                <ListView Grid.Row="1" ItemsSource="{Binding Components}" SelectionMode="Single">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Выбрать" Width="60">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsSelected}" HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
-        <Button Grid.Row="2" Content="Собрать из выбранного" Command="{Binding CreateBuildCommand}" 
-                Height="40" Margin="0,10,0,0" FontSize="16" FontWeight="Bold"/>
-    </Grid>
+                            <GridViewColumn Header="Название" Width="250" DisplayMemberBinding="{Binding Component.Name}"/>
+                            <GridViewColumn Header="Тип" Width="150" DisplayMemberBinding="{Binding TypeAsString}"/>
+                            <GridViewColumn Header="Цена" Width="100" DisplayMemberBinding="{Binding Component.Price, StringFormat={}{0:C}}"/>
+                            <GridViewColumn Header="На складе" Width="100" DisplayMemberBinding="{Binding Component.Stock}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <Button Grid.Row="2" Content="Собрать из выбранного" Command="{Binding CreateBuildCommand}" 
+                        Height="40" Margin="0,10,0,0" FontSize="16" FontWeight="Bold"/>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Мои Заказы">
+            <Grid Margin="10">
+                <ListView ItemsSource="{Binding Orders}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="ID Заказа" Width="100" DisplayMemberBinding="{Binding OrderId}"/>
+                            <GridViewColumn Header="Дата" Width="180" DisplayMemberBinding="{Binding OrderDate, StringFormat='dd.MM.yyyy HH:mm'}"/>
+                            <GridViewColumn Header="Статус" Width="150" DisplayMemberBinding="{Binding Status}"/>
+                            <GridViewColumn Header="Сумма" Width="120" DisplayMemberBinding="{Binding TotalPrice, StringFormat={}{0:C}}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </TabItem>
+
+    </TabControl>
 </Window>
