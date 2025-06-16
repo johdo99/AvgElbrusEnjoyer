@@ -53,7 +53,7 @@ public class MainViewModel : BaseViewModel
         }
     }
 
-    private async Task LoadOrdersAsync()
+    public async Task LoadOrdersAsync()
     {
         var orders = await _apiClient.GetMyOrdersAsync();
         if (orders != null)

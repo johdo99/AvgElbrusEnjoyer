@@ -17,10 +17,12 @@ public partial class CreateOrderView : Window
             if (success)
             {
                 MessageBox.Show("Заказ успешно создан!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.DialogResult = true;
             }
             else
             {
                 MessageBox.Show("Произошла ошибка при создании заказа.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.DialogResult = false;
             }
             this.Close();
         };

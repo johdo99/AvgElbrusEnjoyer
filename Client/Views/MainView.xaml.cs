@@ -17,7 +17,11 @@ public partial class MainView : Window
                 {
                     Owner = this
                 };
-                createOrderView.ShowDialog();
+
+                if (createOrderView.ShowDialog() == true)
+                {
+                    _ = viewModel.LoadOrdersAsync();
+                }
             };
         }
     }
